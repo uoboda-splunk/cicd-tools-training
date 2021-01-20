@@ -9,7 +9,7 @@ def hello():
 
 
 def get_info_string():
-    return 'Hello, World!'
+    return 'Hello, Splunkers!'
 
 
 if __name__ == '__main__':
