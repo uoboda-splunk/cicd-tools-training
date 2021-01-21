@@ -3,28 +3,54 @@ version: 2.1
 orbs:
   python: circleci/python@0.2.1
 
+executors:
+  docker-executor:
+    environment:
+      IMAGE_NAME: uobodasplunk/cicd-demo
+    docker:
+      - image: circleci/python
+
 jobs:
   build:
-    executor: python/default
+    executor: docker-executor
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          command: docker build -t uobodasplunk/cicd-demo .
+          command: docker build -t $IMAGE_NAME .
           name: Build
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar $IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+
   test:
-    executor: python/default
+    executor: docker-executor
     steps:
       - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
       - python/load-cache
       - python/install-deps
       - python/save-cache
       - run:
-          command: python -m pytest
+          command: |
+            docker run -dt --rm -p 8000:5000 $IMAGE_NAME
+            docker ps -a
+            python -m pytest
           name: Test
 
 workflows:
   main:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
