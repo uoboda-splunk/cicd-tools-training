@@ -9,4 +9,4 @@ def test_info_string():
 # def test_with_container():
 #     response = requests.get("http://localhost:8000")
 #     assert response.status_code == 200
-#     assert response.text == "Hello, World!"
+#     assert response.text == "Hello, Splunkers!"
