@@ -28,12 +28,12 @@ jobs:
             - ./image.tar
 
   test:
-    executor: docker-executor
+    machine:
+      image: ubuntu-1604:202007-01
     steps:
       - checkout
       - attach_workspace:
           at: /tmp/workspace
-      - setup_remote_docker
       - run:
           name: Load archived Docker image
           command: docker load -i /tmp/workspace/image.tar
@@ -42,7 +42,7 @@ jobs:
       - python/save-cache
       - run:
           command: |
-            docker run -dt --rm -p 8000:5000 $IMAGE_NAME
+            docker run -dt --rm -p 8000:5000 uobodasplunk/cicd-demo
             docker ps -a
             python -m pytest
           name: Test
