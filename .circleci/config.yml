@@ -62,6 +62,7 @@ jobs:
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME-:$CIRCLE_TAG
 
+
 workflows:
   main:
     jobs:
