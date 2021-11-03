@@ -1,2 +1,3 @@
 optConfig:
-  optIn: true
+  optInRepos:
+  - cicd-tools-training
