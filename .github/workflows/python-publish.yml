@@ -9,8 +9,10 @@
 name: build-test-relesse
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - "main"
+      - "develop"
 
 jobs:
   deploy:
