@@ -11,3 +11,4 @@ new line 3
 new line 4
 new line 6
 new line 6
+new line 6
